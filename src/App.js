@@ -1,23 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import axios from "axios";
+import { useState } from "react";
 
 function App() {
+  const [todo, setTodo] = useState([]);
+  const getTodos = () => {
+    axios
+      .get("https://jsonplaceholder.typicode.com/todos")
+      .then((res) => {
+        // console.log(
+        //   res.data.map((arr) => {
+        //     return arr.title;
+        //   })
+        // );
+        setTodo(
+          res.data.map((arr) => {
+            return arr.title;
+          })
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={getTodos}>get</button>
+
+      {todo.map((todo, id) => {
+        // console.log(id);
+        // console.log(todo);
+        return <p key={id}>{todo}</p>;
+      })}
+
+      {/* <p key={todo.id}>{todo}</p> */}
     </div>
   );
 }
